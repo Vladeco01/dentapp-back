@@ -10,8 +10,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name ="lastName")
+    private String lastName;
 
     @Column(name = "password")
     private String password;
@@ -19,9 +22,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
+
 
     @ManyToOne
     @JoinColumn(name = "clinic_id")
@@ -42,9 +45,10 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String name, String password, String email, Role role, Clinic clinic, List<Appointment> clientAppointments, List<Appointment> dentistAppointments, List<Favorite> favorites) {
+    public User(Integer id, String firstName, String lastName, String password, String email, Role role, Clinic clinic, List<Appointment> clientAppointments, List<Appointment> dentistAppointments, List<Favorite> favorites) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.email = email;
         this.role = role;
@@ -62,12 +66,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String name) {
+        this.lastName = name;
     }
 
     public String getPassword() {
@@ -130,7 +142,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
