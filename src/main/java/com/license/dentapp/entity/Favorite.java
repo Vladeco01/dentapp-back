@@ -1,5 +1,6 @@
 package com.license.dentapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,13 +12,13 @@ public class Favorite {
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
+    @JsonIgnore
     private User client;
 
     @ManyToOne
     @JoinColumn(name = "dentist_id", nullable = false)
+    @JsonIgnore
     private User dentist;
-
-    // Getters and setters
 
 
     public Favorite() {

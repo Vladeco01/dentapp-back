@@ -1,5 +1,6 @@
 package com.license.dentapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class Clinic {
     private String address;
 
     @OneToMany(mappedBy = "clinic")
+    @JsonIgnore
     private List<User> dentists;
 
     // Getters and setters

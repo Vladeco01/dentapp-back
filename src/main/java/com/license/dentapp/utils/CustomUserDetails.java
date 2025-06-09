@@ -15,12 +15,12 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
-    // suprascrie metodele getAuthorities, getPassword, getUsername etc.
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
+
 
     @Override
     public String getPassword() {
@@ -32,5 +32,5 @@ public class CustomUserDetails implements UserDetails {
         return user.getEmail();
     }
 
-    // alte metode...
+
 }

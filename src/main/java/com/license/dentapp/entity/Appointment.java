@@ -1,5 +1,6 @@
 package com.license.dentapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -15,10 +16,12 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
+    @JsonIgnore
     private User client;
 
     @ManyToOne
     @JoinColumn(name = "dentist_id", nullable = false)
+    @JsonIgnore
     private User dentist;
 
     @Column(name = "start_time", nullable = false)

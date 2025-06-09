@@ -5,9 +5,11 @@ import com.license.dentapp.entity.User;
 import com.license.dentapp.utils.CustomUserDetails;
 import com.license.dentapp.utils.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -45,7 +47,6 @@ public class UserService {
 
 
     public User save(User theUser) {
-        // dacă este un nou user, encode password
         if (theUser.getId() == null) {
             theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
         }
@@ -81,5 +82,11 @@ public class UserService {
 
         return jwtUtil.generateToken(new CustomUserDetails(user));
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
 
 }

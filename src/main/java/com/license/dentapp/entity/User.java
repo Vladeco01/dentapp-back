@@ -1,5 +1,6 @@
 package com.license.dentapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -28,15 +29,19 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "clinic_id")
-    private Clinic clinic; // For dentists only
+    @JsonIgnore
+    private Clinic clinic;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Appointment> clientAppointments;
 
     @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Appointment> dentistAppointments;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Favorite> favorites;
 
     // Getters and setters
