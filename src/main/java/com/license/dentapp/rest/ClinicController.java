@@ -1,6 +1,7 @@
 package com.license.dentapp.rest;
 
 import com.license.dentapp.dto.ClinicRequest;
+import com.license.dentapp.entity.Clinic;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,11 @@ public class ClinicController {
     public ResponseEntity<List<User>> findDentistsOfClinic(@PathVariable int clinicId){
         List<User> dentists = clinicService.getDentistsOfClinic(clinicId);
         return ResponseEntity.ok(dentists);
+    }
+
+    @GetMapping("/get-clinics")
+    public ResponseEntity<List<Clinic>> getAllClinics(){
+        List<Clinic> clinics = clinicService.getAllClinics();
+        return ResponseEntity.ok(clinics);
     }
 }

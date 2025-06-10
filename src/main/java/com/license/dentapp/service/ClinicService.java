@@ -54,4 +54,8 @@ public class ClinicService {
     public List<User> getDentistsOfClinic(int clinicId){
         return userRepository.findByClinicId(clinicId);
     }
+
+    public List<Clinic> getAllClinics(){
+        return clinicRepository.findAll();
+    }
 }

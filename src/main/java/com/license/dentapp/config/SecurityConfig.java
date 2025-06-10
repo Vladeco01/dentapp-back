@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/dentist/**").hasRole("DENTIST")
                         .requestMatchers("/users/**").hasAnyRole("ADMIN","CLIENT","DENTIST")
                         .requestMatchers("/api/appointments/**").permitAll()
-                        .requestMatchers("/api/clinics/**").hasAnyRole("DENTIST", "ADMIN")
+                        .requestMatchers("/api/clinics/**").permitAll()
                         .requestMatchers("/api/favorites").hasAnyRole("CLIENT", "ADMIN")
                         .anyRequest().authenticated()
                 )
