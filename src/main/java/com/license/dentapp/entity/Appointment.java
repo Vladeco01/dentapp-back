@@ -36,7 +36,6 @@ public class Appointment {
     @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
-    // Getters and setters
 
 
     public Appointment() {

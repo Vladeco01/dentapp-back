@@ -6,12 +6,18 @@ import com.license.dentapp.dto.AppointmentRequest;
 import com.license.dentapp.dto.AppointmentResponse;
 import com.license.dentapp.entity.Appointment;
 import com.license.dentapp.entity.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -24,28 +30,45 @@ public class AppointmentService {
         this.userRepo = userRepo;
     }
 
-    public void createAppointment(AppointmentRequest req, User client) {
-        if (!Duration.between(req.getStartTime(), req.getEndTime()).equals(Duration.ofHours(1)))
-            throw new RuntimeException("Programările trebuie să fie de 1 oră.");
+    public void createAppointment(AppointmentRequest req) {
+        LocalDateTime start = req.getStartTime();
+        if (start == null) {
+            throw new RuntimeException("Trebuie specificat startTime.");
+        }
+        LocalDateTime end = (req.getEndTime() != null)
+                ? req.getEndTime()
+                : start.plusHours(1);
 
-        if (req.getStartTime().toLocalTime().isBefore(LocalTime.of(8, 0)) ||
-                req.getEndTime().toLocalTime().isAfter(LocalTime.of(17, 0)))
+        if (!Duration.between(start, end).equals(Duration.ofHours(1))) {
+            throw new RuntimeException("Programările trebuie să fie de 1 oră.");
+        }
+
+        if (start.toLocalTime().isBefore(LocalTime.of(8, 0)) ||
+                end.toLocalTime().isAfter(LocalTime.of(17, 0))) {
             throw new RuntimeException("Programările trebuie să fie între 08:00 și 17:00.");
+        }
 
         boolean overlap = appointmentRepo.existsByDentistIdAndTimeOverlap(
-                req.getDentistId(), req.getStartTime(), req.getEndTime());
+                req.getDentistId(), start, end
+        );
+        if (overlap) {
+            throw new RuntimeException("Intervalul este deja ocupat.");
+        }
 
-        if (overlap) throw new RuntimeException("Intervalul este deja ocupat.");
+        User client = userRepo.findById(req.getClientId())
+                .orElseThrow(() -> new EntityNotFoundException("Utilizator nu exista"));
 
-        Appointment appointment = new Appointment();
-        appointment.setStartTime(req.getStartTime());
-        appointment.setEndTime(req.getEndTime());
-        appointment.setStatus(req.isBlock() ? "BLOCKED" : "WAITING");
-        appointment.setDentist(userRepo.findById(req.getDentistId()).orElseThrow());
-        appointment.setClient(client);
+        Appointment appt = new Appointment();
+        appt.setStartTime(start);
+        appt.setEndTime(end);
+        appt.setStatus(req.isBlock() ? "BLOCKED" : "WAITING");
+        appt.setDescription(req.getDescription());
+        appt.setDentist(userRepo.findById(req.getDentistId()).orElseThrow());
+        appt.setClient(client);
 
-        appointmentRepo.save(appointment);
+        appointmentRepo.save(appt);
     }
+
 
     public void updateStatus(Integer id, String status) {
         Appointment appointment = appointmentRepo.findById(id).orElseThrow();
@@ -80,5 +103,28 @@ public class AppointmentService {
 
     public List<Appointment> getAllAppointments(){
         return appointmentRepo.findAll();
+    }
+
+    public List<LocalDateTime> getAvailableSlots(Integer dentistId) {
+
+        List<Appointment> appointments = appointmentRepo.findAllByDentistId(dentistId);
+
+        Set<LocalDateTime> taken = appointments.stream()
+                .map(Appointment::getStartTime)
+                .collect(Collectors.toSet());
+
+
+        List<LocalDateTime> freeSlots = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
+            LocalDate date = today.plusDays(dayOffset);
+            for (int hour = 8; hour < 17; hour++) {
+                LocalDateTime slot = date.atTime(hour, 0);
+                if (!taken.contains(slot)) {
+                    freeSlots.add(slot);
+                }
+            }
+        }
+        return freeSlots;
     }
 }
