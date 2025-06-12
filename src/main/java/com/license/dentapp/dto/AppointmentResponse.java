@@ -30,6 +30,54 @@ public class AppointmentResponse {
         this.dentistName = dentistName;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDentistName() {
+        return dentistName;
+    }
+
+    public void setDentistName(String dentistName) {
+        this.dentistName = dentistName;
+    }
+
     public static AppointmentResponse fromEntity(Appointment a) {
         String dentistName = a.getDentist().getFirstName() + " " + a.getDentist().getLastName();
         return new AppointmentResponse(
