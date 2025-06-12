@@ -77,7 +77,6 @@ public class AuthController {
     }
 
     private boolean isPasswordStrong(String password) {
-        // cel putin 8 caractere, o majuscula, o cifra si un caracter special
         String passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}$";
         return password != null && password.matches(passwordPattern);
     }

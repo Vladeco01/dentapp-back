@@ -58,4 +58,6 @@ public class ClinicService {
     public List<Clinic> getAllClinics(){
         return clinicRepository.findAll();
     }
+
+    public Clinic getClinicOfDentist(int dentistId) { return clinicRepository.findByDentistId(dentistId);}
 }

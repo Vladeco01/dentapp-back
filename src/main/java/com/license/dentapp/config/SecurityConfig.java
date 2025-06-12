@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").hasAnyRole("ADMIN","CLIENT","DENTIST")
                         .requestMatchers("/api/appointments/**").permitAll()
                         .requestMatchers("/api/clinics/**").permitAll()
-                        .requestMatchers("/api/favorites").hasAnyRole("CLIENT", "ADMIN")
+                        .requestMatchers("/api/favorites/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

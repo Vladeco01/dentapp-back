@@ -50,4 +50,11 @@ public class ClinicController {
         List<Clinic> clinics = clinicService.getAllClinics();
         return ResponseEntity.ok(clinics);
     }
+
+    @GetMapping("/get-clinic/{dentistId}")
+    public ResponseEntity<String> getClinicForDentist(@PathVariable int dentistId){
+        Clinic clinic = clinicService.getClinicOfDentist(dentistId);
+        String result = "Clinica: " + clinic.getName() + " Adresa: " + clinic.getAddress();
+        return ResponseEntity.ok(result);
+    }
 }
