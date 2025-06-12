@@ -1,10 +1,13 @@
 package com.license.dentapp.rest;
 
+import com.license.dentapp.dao.AppointmentRepository;
+import com.license.dentapp.dao.UserRepository;
 import com.license.dentapp.dto.AppointmentRequest;
 import com.license.dentapp.dto.AppointmentResponse;
 import com.license.dentapp.entity.Appointment;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.service.AppointmentService;
+import com.license.dentapp.service.NotificationService;
 import com.license.dentapp.utils.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -21,14 +25,26 @@ import java.util.stream.Collectors;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+    private final NotificationService notificationService;
+    private final AppointmentRepository appointmentRepository;
+    private final UserRepository userRepository;
 
-    public AppointmentController(AppointmentService appointmentService) {
+    public AppointmentController(AppointmentService appointmentService, NotificationService notificationService,AppointmentRepository appointmentRepository,UserRepository userRepository) {
         this.appointmentService = appointmentService;
+        this.notificationService = notificationService;
+        this.appointmentRepository = appointmentRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/createAppointment")
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest request) {
         appointmentService.createAppointment(request);
+        Optional<User> optionalUser = userRepository.findById(request.getClientId());
+        User user = optionalUser.get();
+        notificationService.createNotification(
+                request.getDentistId(),
+                "Ai primit o nouă cerere de programare de la userul " + user.getFirstName() + user.getLastName()
+        );
         return ResponseEntity.ok().build();
     }
 
@@ -36,6 +52,12 @@ public class AppointmentController {
     @PutMapping("/{id}/accept")
     public ResponseEntity<?> acceptAppointment(@PathVariable Integer id) {
         appointmentService.updateStatus(id, "ACCEPTED");
+        Optional<Appointment> optAppointment = appointmentRepository.findById(id);
+        Appointment appointment = optAppointment.get();
+        notificationService.createNotification(
+                appointment.getClient().getId(),
+                "Dentistul " + appointment.getDentist().getFirstName() + " " + appointment.getDentist().getLastName() + " a acceptat programarea ta"
+        );
         return ResponseEntity.ok().build();
     }
 

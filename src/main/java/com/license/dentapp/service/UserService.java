@@ -1,9 +1,11 @@
 package com.license.dentapp.service;
 
 import com.license.dentapp.dao.UserRepository;
+import com.license.dentapp.dto.UserUpdateRequest;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.utils.CustomUserDetails;
 import com.license.dentapp.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +89,21 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User updateUser(Integer id, UserUpdateRequest dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User nu a fost gasit: " + id));
 
+        if (dto.getFirstName() != null) {
+            user.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null) {
+            user.setLastName(dto.getLastName());
+        }
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+
+        return userRepository.save(user);
+    }
 
 }

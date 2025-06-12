@@ -2,6 +2,7 @@ package com.license.dentapp.rest;
 
 import com.license.dentapp.dao.UserRepository;
 import com.license.dentapp.dto.AuthRequest;
+import com.license.dentapp.dto.UserUpdateRequest;
 import com.license.dentapp.entity.Role;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.service.UserService;
@@ -49,6 +50,15 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> update(@RequestBody User user) {
         User updated = userService.save(user);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity<User> update(
+            @PathVariable Integer id,
+            @RequestBody UserUpdateRequest dto
+    ) {
+        User updated = userService.updateUser(id, dto);
         return ResponseEntity.ok(updated);
     }
 

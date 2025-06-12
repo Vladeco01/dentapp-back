@@ -94,7 +94,7 @@ public class AppointmentService {
 
     public List<AppointmentResponse> getPendingAppointmentsByDentist(Integer dentistId) {
         return appointmentRepo
-                .findAllByDentistIdAndStatus(dentistId, "PENDING")
+                .findAllByDentistIdAndStatus(dentistId, "WAITING")
                 .stream()
                 .map(AppointmentResponse::fromEntity)
                 .toList();
