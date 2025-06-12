@@ -82,4 +82,10 @@ public class AppointmentController {
                 .map(LocalDateTime::toString)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/dentist/{dentistId}/pending")
+    @PreAuthorize("hasRole('DENTIST')")
+    public List<AppointmentResponse> getPendingAppointmentsForDentist(@PathVariable Integer dentistId){
+        return appointmentService.getPendingAppointmentsByDentist(dentistId);
+    }
 }

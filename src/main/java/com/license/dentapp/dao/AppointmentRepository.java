@@ -36,4 +36,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
         ORDER BY a.startTime ASC
     """)
     List<Appointment> findAllByClientId(@Param("clientId") Integer clientId);
+
+    List<Appointment> findAllByDentistIdAndStatus(Integer dentistId, String status);
 }

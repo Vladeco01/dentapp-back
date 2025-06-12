@@ -92,6 +92,14 @@ public class AppointmentService {
                 .toList();
     }
 
+    public List<AppointmentResponse> getPendingAppointmentsByDentist(Integer dentistId) {
+        return appointmentRepo
+                .findAllByDentistIdAndStatus(dentistId, "PENDING")
+                .stream()
+                .map(AppointmentResponse::fromEntity)
+                .toList();
+    }
+
     public void deleteAppointment(Integer id){
         appointmentRepo.deleteById(id);
     }
