@@ -44,8 +44,6 @@ public class User {
     @JsonIgnore
     private List<Favorite> favorites;
 
-    // Getters and setters
-
 
     public User() {
     }

@@ -2,6 +2,7 @@ package com.license.dentapp.rest;
 
 import com.license.dentapp.dao.AppointmentRepository;
 import com.license.dentapp.dao.UserRepository;
+import com.license.dentapp.dto.AppointmentAdminResponse;
 import com.license.dentapp.dto.AppointmentRequest;
 import com.license.dentapp.dto.AppointmentResponse;
 import com.license.dentapp.entity.Appointment;
@@ -93,7 +94,7 @@ public class AppointmentController {
 
     @GetMapping("/getAll")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Appointment>> getAllAppointments(){
+    public ResponseEntity<List<AppointmentAdminResponse>> getAllAppointments(){
         return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 

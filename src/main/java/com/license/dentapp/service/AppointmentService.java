@@ -7,7 +7,7 @@ import com.license.dentapp.dto.AppointmentResponse;
 import com.license.dentapp.entity.Appointment;
 import com.license.dentapp.entity.User;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.license.dentapp.dto.AppointmentAdminResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -109,8 +109,11 @@ public class AppointmentService {
         return appointmentRepo.save(theAppointment);
     }
 
-    public List<Appointment> getAllAppointments(){
-        return appointmentRepo.findAll();
+    public List<AppointmentAdminResponse> getAllAppointments(){
+        return appointmentRepo.findAll()
+                .stream()
+                .map(AppointmentAdminResponse::fromEntity)
+                .toList();
     }
 
     public List<LocalDateTime> getAvailableSlots(Integer dentistId) {

@@ -21,7 +21,6 @@ public class Clinic {
     @JsonIgnore
     private List<User> dentists;
 
-    // Getters and setters
 
     public Clinic() {
     }
