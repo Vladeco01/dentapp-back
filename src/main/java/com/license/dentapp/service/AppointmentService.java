@@ -116,6 +116,15 @@ public class AppointmentService {
                 .toList();
     }
 
+    public void blockSlot(Integer dentistId, LocalDateTime startTime) {
+        AppointmentRequest req = new AppointmentRequest();
+        req.setDentistId(dentistId);
+        req.setClientId(dentistId);
+        req.setStartTime(startTime);
+        req.setBlock(true);
+        createAppointment(req);
+    }
+
     public List<LocalDateTime> getAvailableSlots(Integer dentistId) {
 
         List<Appointment> appointments = appointmentRepo.findAllByDentistId(dentistId);

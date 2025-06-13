@@ -5,6 +5,7 @@ import com.license.dentapp.dao.UserRepository;
 import com.license.dentapp.dto.AppointmentAdminResponse;
 import com.license.dentapp.dto.AppointmentRequest;
 import com.license.dentapp.dto.AppointmentResponse;
+import com.license.dentapp.dto.BlockSlotRequest;
 import com.license.dentapp.entity.Appointment;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.service.AppointmentService;
@@ -104,6 +105,12 @@ public class AppointmentController {
                 .stream()
                 .map(LocalDateTime::toString)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<Void> blockSlot(@RequestBody BlockSlotRequest request) {
+        appointmentService.blockSlot(request.getDentistId(), request.getStartTime());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/dentist/{dentistId}/pending")
