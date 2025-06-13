@@ -1,5 +1,6 @@
 package com.license.dentapp.dao;
 
+import com.license.dentapp.entity.Role;
 import com.license.dentapp.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     Optional<User> findByFirstName(String firstName);
 
     List<User> findByClinicId(int clinicId);
+    List<User> findByRole(Role role);
 }

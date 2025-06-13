@@ -1,14 +1,11 @@
 package com.license.dentapp.rest;
 
 import com.license.dentapp.dao.UserRepository;
-import com.license.dentapp.dto.AuthRequest;
 import com.license.dentapp.dto.UserUpdateRequest;
-import com.license.dentapp.entity.Role;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,22 +29,18 @@ public class UserController {
         return ResponseEntity.of(userOpt);
     }
 
-
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> create(@RequestBody User user) {
         User created = userService.register(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> update(@RequestBody User user) {
         User updated = userService.save(user);
         return ResponseEntity.ok(updated);
@@ -63,9 +56,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/dentists")
+    public ResponseEntity<List<User>> getAllDentists() {
+        List<User> dentists = userService.getAllDentists();
+        return ResponseEntity.ok(dentists);
     }
 }

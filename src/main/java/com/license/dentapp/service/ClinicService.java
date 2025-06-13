@@ -6,12 +6,14 @@ import com.license.dentapp.dto.ClinicRequest;
 import com.license.dentapp.entity.Clinic;
 import com.license.dentapp.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ClinicService {
 
     private final UserRepository userRepository;
@@ -44,6 +46,8 @@ public class ClinicService {
         if(optUser.isPresent() && optionalClinic.isPresent()){
             User user = optUser.get();
             Clinic clinic = optionalClinic.get();
+            user.setClinic(clinic);
+            userRepository.save(user);
             clinic.getDentists().add(user);
         }
         else {

@@ -2,6 +2,7 @@ package com.license.dentapp.service;
 
 import com.license.dentapp.dao.UserRepository;
 import com.license.dentapp.dto.UserUpdateRequest;
+import com.license.dentapp.entity.Role;
 import com.license.dentapp.entity.User;
 import com.license.dentapp.utils.CustomUserDetails;
 import com.license.dentapp.utils.JwtUtil;
@@ -104,6 +105,10 @@ public class UserService {
         }
 
         return userRepository.save(user);
+    }
+
+    public List<User> getAllDentists() {
+        return userRepository.findByRole(Role.DENTIST);
     }
 
 }

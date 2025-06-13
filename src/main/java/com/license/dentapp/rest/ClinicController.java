@@ -33,7 +33,7 @@ public class ClinicController {
         clinicService.deleteClinic(clinicId);
     }
 
-    @PutMapping("/{clinicId}/add-dentist/{dentistId}")
+    @PostMapping("/{clinicId}/add-dentist/{dentistId}")
     public ResponseEntity<?> addDentistToClinic(@PathVariable int clinicId, @PathVariable int dentistId) {
         clinicService.addDentistToClinic(dentistId, clinicId);
         return ResponseEntity.ok().build();
@@ -56,5 +56,11 @@ public class ClinicController {
         Clinic clinic = clinicService.getClinicOfDentist(dentistId);
         String result = "Clinica: " + clinic.getName() + " Adresa: " + clinic.getAddress();
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/get-clinic-id/{dentistId}")
+    public ResponseEntity<Long> getClinicIdForDentist(@PathVariable int dentistId){
+        Clinic clinic = clinicService.getClinicOfDentist(dentistId);
+        return ResponseEntity.ok(clinic.getId());
     }
 }

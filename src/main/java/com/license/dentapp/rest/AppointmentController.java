@@ -106,7 +106,6 @@ public class AppointmentController {
     }
 
     @GetMapping("/dentist/{dentistId}/pending")
-    @PreAuthorize("hasRole('DENTIST')")
     public List<AppointmentResponse> getPendingAppointmentsForDentist(@PathVariable Integer dentistId){
         return appointmentService.getPendingAppointmentsByDentist(dentistId);
     }
