@@ -44,11 +44,16 @@ public class User {
     @JsonIgnore
     private List<Favorite> favorites;
 
+    @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Favorite> dentistFavorites;
 
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String password, String email, Role role, Clinic clinic, List<Appointment> clientAppointments, List<Appointment> dentistAppointments, List<Favorite> favorites) {
+    public User(Integer id, String firstName, String lastName, String password, String email, Role role, Clinic clinic,
+                List<Appointment> clientAppointments, List<Appointment> dentistAppointments,
+                List<Favorite> favorites, List<Favorite> dentistFavorites) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,6 +64,7 @@ public class User {
         this.clientAppointments = clientAppointments;
         this.dentistAppointments = dentistAppointments;
         this.favorites = favorites;
+        this.dentistFavorites = dentistFavorites;
     }
 
     public Integer getId() {
@@ -141,6 +147,14 @@ public class User {
         this.favorites = favorites;
     }
 
+    public List<Favorite> getDentistFavorites() {
+        return dentistFavorites;
+    }
+
+    public void setDentistFavorites(List<Favorite> dentistFavorites) {
+        this.dentistFavorites = dentistFavorites;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -154,6 +168,7 @@ public class User {
                 ", clientAppointments=" + clientAppointments +
                 ", dentistAppointments=" + dentistAppointments +
                 ", favorites=" + favorites +
+                ", dentistFavorites=" + dentistFavorites +
                 '}';
     }
 }
