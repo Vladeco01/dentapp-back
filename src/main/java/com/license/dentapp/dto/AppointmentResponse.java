@@ -15,19 +15,22 @@ public class AppointmentResponse {
     private String status;
     private String description;
     private String dentistName;
+    private Integer clientId;
 
     public AppointmentResponse(Integer id,
                                LocalDateTime startTime,
                                LocalDateTime endTime,
                                String status,
                                String description,
-                               String dentistName) {
+                               String dentistName,
+                               Integer clientId) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
         this.description = description;
         this.dentistName = dentistName;
+        this.clientId = clientId;
     }
 
     public Integer getId() {
@@ -78,6 +81,14 @@ public class AppointmentResponse {
         this.dentistName = dentistName;
     }
 
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
     public static AppointmentResponse fromEntity(Appointment a) {
         String dentistName = a.getDentist().getFirstName() + " " + a.getDentist().getLastName();
         return new AppointmentResponse(
@@ -86,7 +97,8 @@ public class AppointmentResponse {
                 a.getEndTime(),
                 a.getStatus(),
                 a.getDescription(),
-                dentistName
+                dentistName,
+                a.getClient().getId()
         );
     }
 }
