@@ -45,7 +45,7 @@ public class AppointmentController {
         User user = optionalUser.get();
         notificationService.createNotification(
                 request.getDentistId(),
-                "Ai primit o nouă cerere de programare de la userul " + user.getFirstName() + user.getLastName()
+                "Ai primit o nouă cerere de programare de la clientul " + user.getFirstName()+ " " + user.getLastName()
         );
         return ResponseEntity.ok().build();
     }
