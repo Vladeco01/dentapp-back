@@ -110,6 +110,7 @@ public class AppointmentController {
     @PostMapping("/block")
     public ResponseEntity<Void> blockSlot(@RequestBody BlockSlotRequest request) {
         appointmentService.blockSlot(request.getDentistId(), request.getStartTime());
+
         return ResponseEntity.ok().build();
     }
 
